@@ -1,0 +1,30 @@
+.best-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.best-title{
+    width: 700px;
+}
+
+.best-title .bring{
+    font-size: 40px;
+    color: black;
+}
+
+.best-title .orange-title{
+    font-size: 40px;
+    color: #D87D4A;
+}
+
+.best-title .best-info{
+    width: 700px;
+    color: black;
+    opacity: 0.5;
+    line-height: 30px;
+}
+
+.best-img img{
+    width: 669px;
+}
