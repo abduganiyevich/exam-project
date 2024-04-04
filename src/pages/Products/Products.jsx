@@ -6,18 +6,42 @@ import Header from '../../components/Header/Header';
 import Type from '../../components/Type/Type'
 import BestAudio from '../../components/BestAudio/BestAudio'
 import Footer from '../../components/Footer/Footer'
+import {  useDispatch, useSelector } from 'react-redux';
+import { decrement, increment } from '../../store/cart-slicer';
+import { addToCart } from '../../store/cart-slicer';
 import './index.css';
 
 function Products() {
   const [data, setData] = useState([]);
   const { id } = useParams();
+  const dispatch=useDispatch();
+  const itemNumber = useSelector((state) =>state.cart.itemNumber);
+  console.log(itemNumber);
   useEffect(() => {
     fetch(`http://localhost:3000/${id}`)
       .then((res) => res.json())
       .then((resjson) => {
         setData(resjson);
-      });
+      })
+      .catch((err)=>{
+       console.log(err);
+      })
+      
   }, [id]);
+  const handleIncrement = () => {
+    dispatch(increment());
+  };
+
+  const handleDecrement = () => {
+    dispatch(decrement());
+  };
+  const handleAddToCart = (product) => {
+    if (product.quantity === 0) {
+      return; 
+    }
+    
+    dispatch(addToCart(product));
+  };
   return (
     <div>
       <Header />
@@ -32,12 +56,12 @@ function Products() {
             <span className='item-price'>$ {data.price}</span>
             <div className='btn-group'>
               <div className='add-btn'>
-              <button>-</button>
-                <button>0</button>
-                <button>+</button>
+                <button onClick={handleDecrement}>-</button>
+                <button>{itemNumber}</button>
+                <button onClick={handleIncrement} >+</button>
               </div>
               <div className='add-cart'>
-              <button>Add to cart</button>
+              <button onClick={() => handleAddToCart(data)}>Add to cart</button>
               </div>
             </div>
           </div>

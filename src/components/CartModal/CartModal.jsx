@@ -5,17 +5,22 @@ function CartModal({ isOpen, onClose }) {
     const [cartItems, setCartItems] = useState([]);
 
     useEffect(() => {
-        // localStorage dan ma'lumotni olish
         const savedCartItems = JSON.parse(localStorage.getItem('cartItems'));
-        if (savedCartItems) {
+        if (savedCartItems && Array.isArray(savedCartItems)) {
             setCartItems(savedCartItems);
         }
     }, []);
 
+    const handleCheckout = () => {
+        setCartItems([]); 
+        localStorage.removeItem('cartItems'); 
+        onClose(); 
+    };
+
     return (
         <div>
             {isOpen && (
-                <div className="overlay"></div>
+                <div className="overlay" onClick={onClose}></div> 
             )}
             <div className={`cart-modal ${isOpen ? 'open' : ''}`}>
                 <div className="cart-content">
@@ -29,6 +34,7 @@ function CartModal({ isOpen, onClose }) {
                                 ))}
                             </ul>
                             <p>Total: $ {cartItems.reduce((total, item) => total + item.price, 0)}</p>
+                            <button onClick={handleCheckout}>Checkout</button>
                         </div>
                     ) : (
                         <p>Your cart is empty</p>
